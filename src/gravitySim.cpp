@@ -1,22 +1,22 @@
 #include <GLFW/glfw3.h>
 #include <math.h>
 #include "glm/glm.hpp"
-#include "structs.hpp"
+#include "Planet.hpp"
 
 
 static constexpr int SCREEN_WIDTH = 1200;
 static constexpr int SCREEN_HEIGHT = 800;
 
 
-void drawCircle(Circle &circle){
+void drawPlanet(Planet &planet){
 
     glBegin(GL_TRIANGLE_FAN);
-    glVertex2d(circle.position.x, circle.position.y);
+    glVertex2d(planet.position.x, planet.position.y);
 
-    for(int i = 0; i < circle.res+1; i++){
-            float angle = 2.0f * M_PI * static_cast<float>(i)/circle.res;
-            float x = circle.position.x + cos(angle) * circle.radius;
-            float y = circle.position.y + sin(angle) * circle.radius;
+    for(int i = 0; i < planet.res+1; i++){
+            float angle = 2.0f * M_PI * static_cast<float>(i)/planet.res;
+            float x = planet.position.x + cos(angle) * planet.radius;
+            float y = planet.position.y + sin(angle) * planet.radius;
             glVertex2d(x,y);
     }
 
@@ -24,18 +24,18 @@ void drawCircle(Circle &circle){
 }
 
 
-void Euler(Circle &circle, float deltaTime){
-        circle.velocity.x += circle.acceleration.x * deltaTime;
-        circle.velocity.y += circle.acceleration.y * deltaTime;
+void Euler(Planet &planet, float deltaTime){
+        planet.velocity.x += planet.acceleration.x * deltaTime;
+        planet.velocity.y += planet.acceleration.y * deltaTime;
 
-        circle.position.x += circle.velocity.x * deltaTime;
-        circle.position.y += circle.velocity.y * deltaTime;
+        planet.position.x += planet.velocity.x * deltaTime;
+        planet.position.y += planet.velocity.y * deltaTime;
 }
 
 
-void checkEdgeProtection(Circle &circle){
-    if (circle.position.x < circle.radius || circle.position.x > SCREEN_WIDTH - circle.radius) circle.velocity.x *= -1;
-    if (circle.position.y < circle.radius || circle.position.y > SCREEN_HEIGHT - circle.radius) circle.velocity.y *= -1;
+void checkEdgeProtection(Planet &planet){
+    if (planet.position.x < planet.radius || planet.position.x > SCREEN_WIDTH - planet.radius) planet.velocity.x *= -1;
+    if (planet.position.y < planet.radius || planet.position.y > SCREEN_HEIGHT - planet.radius) planet.velocity.y *= -1;
 }
 
 
@@ -62,11 +62,11 @@ int main() {
 
     int res = 100;
     int radius = 50;
-    Vector position = { SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT / 2.0f };
-    Vector velocity = { 0.0f, 0.0f };
-    Vector acceleration = {0.0f, -9.81f};
+    glm::vec2 position = { SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT / 2.0f };
+    glm::vec2 velocity = { 0.0f, 0.0f };
+    glm::vec2 acceleration = {0.0f, -9.81f};
 
-    Circle circle1(res,radius,position,velocity,acceleration);
+    Planet planet1(res,radius,position,velocity,acceleration);
 
     // Rendering Loop
     float lastTime = glfwGetTime();
@@ -76,9 +76,9 @@ int main() {
         float deltaTime = currentTime - lastTime;
         lastTime = currentTime;
 
-        Euler(circle1, deltaTime);
-        checkEdgeProtection(circle1);
-        drawCircle(circle1);
+        Euler(planet1, deltaTime);
+        checkEdgeProtection(planet1);
+        drawPlanet(planet1);
         
         glfwSwapBuffers(window);
         glfwPollEvents();
