@@ -7,8 +7,8 @@
 
 static constexpr int SCREEN_WIDTH = 1500;
 static constexpr int SCREEN_HEIGHT = 920;
-static constexpr float G = 6.67430e-11f / 100000000; // gravitational constant (adjust scale as needed)
-static constexpr bool BORDERS = false; // Activate or Deactivate Screen Boarders
+static constexpr float G = 6.67430e-11f / 100000000;        // Gravitational constant (adjust scale as needed)
+static constexpr bool EDGES = false;                        // Activate or deactivate screen edges
 
 
 void drawPlanet(Planet &planet){
@@ -27,14 +27,14 @@ void drawPlanet(Planet &planet){
 }
 
 
-//reverses velocity if screen edge is hit
+// Reverses velocity, if one of the screen edges is being hit
 void checkEdgeProtection(Planet &planet){
     if (planet.position.x < planet.radius || planet.position.x > SCREEN_WIDTH - planet.radius) planet.velocity.x *= -1;
     if (planet.position.y < planet.radius || planet.position.y > SCREEN_HEIGHT - planet.radius) planet.velocity.y *= -1;
 }
 
 
-// Classical Newton Gravitation Formula
+// Classical Newtonian Physics 
 glm::vec2 computeGravitationalForce(const Planet& a, const Planet& b) {
     glm::vec2 r = b.position - a.position;
     float distanceSquared = glm::dot(r, r); 
@@ -65,22 +65,22 @@ void updateAccelerations(std::vector<Planet> &planets) {
 
 void calculateMovement(std::vector<Planet> &planets, float deltaTime){
 
-    updateAccelerations(planets);   // Analyzes gravitational forces and updates Accelerations
+    updateAccelerations(planets);   // Analyzes gravitational forces and updates accelerations accordingly
 
     for(auto& planet : planets){
 
-        // Euler (semi-implicit)
+        // Euler(semi-implicit)
         planet.velocity += planet.acceleration * deltaTime;
         planet.position += planet.velocity * deltaTime;
 
-        if(BORDERS) checkEdgeProtection(planet);
+        if(EDGES) checkEdgeProtection(planet);
     }
 }
 
 
 int main() {
 
-    //Setup Window
+    // Setup Window
     if (!glfwInit()) return -1;
 
     
@@ -91,10 +91,10 @@ int main() {
     }
     glfwMakeContextCurrent(window);
 
-    // 2D Projection and Background Settings
+    // 2D Projection and background settings
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, -1, 1);  // orthographic projection
+    glOrtho(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, -1, 1);  // orthographic projection on the screen
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glClearColor(0, 0, 0, 1);
@@ -138,12 +138,12 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT);
 
 
-        // time
+        // Time
         float currentTime = glfwGetTime();
         float deltaTime = currentTime - lastTime;
         lastTime = currentTime;
 
-        // physics and rendering
+        // Physics and rendering
         calculateMovement(planets, deltaTime);
         for(auto& planet : planets){
             drawPlanet(planet);
