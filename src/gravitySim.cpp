@@ -1,5 +1,6 @@
 #include <GLFW/glfw3.h>
 #include <math.h>
+#include "glm/glm.hpp"
 #include "structs.hpp"
 
 
@@ -7,7 +8,7 @@ static constexpr int SCREEN_WIDTH = 1200;
 static constexpr int SCREEN_HEIGHT = 800;
 
 
-void drawCircle(Circle circle){
+void drawCircle(Circle &circle){
 
     glBegin(GL_TRIANGLE_FAN);
     glVertex2d(circle.position.x, circle.position.y);
@@ -15,7 +16,7 @@ void drawCircle(Circle circle){
     for(int i = 0; i < circle.res+1; i++){
             float angle = 2.0f * M_PI * static_cast<float>(i)/circle.res;
             float x = circle.position.x + cos(angle) * circle.radius;
-            float y = circle.position.x + sin(angle) * circle.radius;
+            float y = circle.position.y + sin(angle) * circle.radius;
             glVertex2d(x,y);
     }
 
@@ -23,12 +24,18 @@ void drawCircle(Circle circle){
 }
 
 
-void Euler(Circle circle, float deltaTime){
+void Euler(Circle &circle, float deltaTime){
         circle.velocity.x += circle.acceleration.x * deltaTime;
         circle.velocity.y += circle.acceleration.y * deltaTime;
 
         circle.position.x += circle.velocity.x * deltaTime;
         circle.position.y += circle.velocity.y * deltaTime;
+}
+
+
+void checkEdgeProtection(Circle &circle){
+    if (circle.position.x < circle.radius || circle.position.x > SCREEN_WIDTH - circle.radius) circle.velocity.x *= -1;
+    if (circle.position.y < circle.radius || circle.position.y > SCREEN_HEIGHT - circle.radius) circle.velocity.y *= -1;
 }
 
 
@@ -70,11 +77,7 @@ int main() {
         lastTime = currentTime;
 
         Euler(circle1, deltaTime);
-
-        // Edge Protection
-        if (position.x < radius || position.x > SCREEN_WIDTH - radius) velocity.x *= -1;
-        if (position.y < radius || position.y > SCREEN_HEIGHT - radius) velocity.y *= -1;
-
+        checkEdgeProtection(circle1);
         drawCircle(circle1);
         
         glfwSwapBuffers(window);

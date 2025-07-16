@@ -2,10 +2,10 @@
 
 # Compiler
 CXX = g++
-CXXFLAGS = -Wall -std=c++20
+CXXFLAGS = -std=c++20 -Wall -I./include
 
 # Source and output
-SRC = gravitySim.cpp
+SRC = src/gravitySim.cpp
 OUT = app
 
 # Libraries to link

@@ -6,8 +6,8 @@ struct Vector {
 };
 
 struct Circle {
-    int res;
     int radius;
+    int res;
     Vector position;
     Vector velocity;
     Vector acceleration;
