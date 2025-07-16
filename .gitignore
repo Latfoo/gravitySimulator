@@ -1,0 +1,17 @@
+# Ignore executable binary
+app
+
+# Ignore object files
+*.o
+
+# Ignore backup or temp files
+*~
+
+# Ignore core dumps
+core
+
+# Ignore Vim swap files
+*.swp
+
+# Ignore other editor temp files
+*.tmp
