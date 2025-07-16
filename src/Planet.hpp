@@ -1,13 +1,15 @@
 #pragma once
+#include <glm/glm.hpp>
 
 struct Planet {
-    int radius;
+    float radius;
     int res;
+    float mass;
     glm::vec2 position;
     glm::vec2 velocity;
     glm::vec2 acceleration;
 
     Planet() = default;
-    Planet(int radius, int res, glm::vec2 position, glm::vec2 velocity, glm::vec2 acceleration)
-        : radius(radius), res(res), position(position), velocity(velocity), acceleration(acceleration) {}
+    Planet(float radius, int res, float mass, glm::vec2 position, glm::vec2 velocity, glm::vec2 acceleration)
+        : radius(radius), res(res), mass(mass), position(position), velocity(velocity), acceleration(acceleration) {}
 };
