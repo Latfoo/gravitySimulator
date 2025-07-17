@@ -9,7 +9,7 @@
 static constexpr int SCREEN_WIDTH = 1500;
 static constexpr int SCREEN_HEIGHT = 920;
 static constexpr float G = 6.67430e-11f / 100000000;        // Gravitational constant (adjust scale as needed)
-static constexpr bool EDGES = false;                        // Activate or deactivate screen edges
+static constexpr bool EDGES = true;                        // Activate or deactivate screen edges
 
 
 void drawPlanet(Planet &planet){
@@ -64,6 +64,24 @@ void updateAccelerations(std::vector<Planet> &planets) {
 }
 
 
+bool checkCollision(const Planet& a, const Planet& b) {
+    float dist = glm::length(b.position - a.position);
+    return dist <= (a.radius + b.radius);
+}
+
+
+void checkAllCollisions(std::vector<Planet>& planets) {
+    for (size_t i = 0; i < planets.size(); ++i) {
+        for (size_t j = i + 1; j < planets.size(); ++j) {
+            if (checkCollision(planets[i], planets[j])) {
+                planets[i].velocity *= -1.0f;
+                planets[j].velocity *= -1.0f;
+            }
+        }
+    }
+}
+
+
 void calculateMovement(std::vector<Planet> &planets, float deltaTime){
 
     updateAccelerations(planets);   // Analyzes gravitational forces and updates accelerations accordingly
@@ -82,12 +100,12 @@ void calculateTotalEnergy(const std::vector<Planet>& planets) {
     float totalKinetic = 0.0f;
     float totalPotential = 0.0f;
 
-    // Kinetic energy
+    // Kinetic energy T
     for (const auto& planet : planets) {
         totalKinetic += 0.5f * planet.mass * glm::dot(planet.velocity, planet.velocity);
     }
 
-    // Potential energy (only unique pairs, no self-interaction)
+    // Potential energy V
     for (size_t i = 0; i < planets.size(); ++i) {
         for (size_t j = i + 1; j < planets.size(); ++j) {
             glm::vec2 r = planets[j].position - planets[i].position;
@@ -102,7 +120,6 @@ void calculateTotalEnergy(const std::vector<Planet>& planets) {
               << " Potential: " << totalPotential
               << " Total: " << totalEnergy << std::endl;
 }
-
 
 
 int main() {
@@ -147,7 +164,7 @@ int main() {
     float radius3 = 20.0f;
     float mass3 = 7.348e22;
     glm::vec2 position3 = { SCREEN_WIDTH / 1.1f, SCREEN_HEIGHT / 1.2f };
-    glm::vec2 velocity3 = { -50.0f, -70.0f };
+    glm::vec2 velocity3 = { -10.0f, -30.0f };
     glm::vec2 acceleration3 = {0.0f, 0.0f};
 
     std::vector<Planet> planets;
@@ -172,6 +189,7 @@ int main() {
 
         // Physics and rendering
         calculateMovement(planets, deltaTime);
+        checkAllCollisions(planets);
         calculateTotalEnergy(planets);
         for(auto& planet : planets){
             drawPlanet(planet);
