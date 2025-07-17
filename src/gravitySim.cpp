@@ -1,5 +1,6 @@
 #include <GLFW/glfw3.h>
 #include <math.h>
+#include <iostream>
 #include <vector>
 #include "glm/glm.hpp"
 #include "Planet.hpp"
@@ -77,6 +78,32 @@ void calculateMovement(std::vector<Planet> &planets, float deltaTime){
     }
 }
 
+void calculateTotalEnergy(const std::vector<Planet>& planets) {
+    float totalKinetic = 0.0f;
+    float totalPotential = 0.0f;
+
+    // Kinetic energy
+    for (const auto& planet : planets) {
+        totalKinetic += 0.5f * planet.mass * glm::dot(planet.velocity, planet.velocity);
+    }
+
+    // Potential energy (only unique pairs, no self-interaction)
+    for (size_t i = 0; i < planets.size(); ++i) {
+        for (size_t j = i + 1; j < planets.size(); ++j) {
+            glm::vec2 r = planets[j].position - planets[i].position;
+            float dist = glm::length(r);
+            totalPotential -= G * planets[i].mass * planets[j].mass / dist;
+        }
+    }
+
+    float totalEnergy = totalKinetic + totalPotential;
+
+    std::cout << "Kinetic: " << totalKinetic
+              << " Potential: " << totalPotential
+              << " Total: " << totalEnergy << std::endl;
+}
+
+
 
 int main() {
 
@@ -145,6 +172,7 @@ int main() {
 
         // Physics and rendering
         calculateMovement(planets, deltaTime);
+        calculateTotalEnergy(planets);
         for(auto& planet : planets){
             drawPlanet(planet);
         }
