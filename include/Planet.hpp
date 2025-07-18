@@ -1,4 +1,7 @@
+// Planet.hpp
+
 #pragma once
+
 #include <glm/glm.hpp>
 
 struct Planet {

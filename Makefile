@@ -4,8 +4,8 @@
 CXX = g++
 CXXFLAGS = -std=c++20 -Wall -I./include
 
-# Source and output
-SRC = src/gravitySim.cpp
+# Sources and output
+SRC = $(wildcard src/*.cpp)   # All .cpp files in src/
 OUT = app
 
 # Libraries to link
