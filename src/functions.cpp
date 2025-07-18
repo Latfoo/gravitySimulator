@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <glm/glm.hpp>
+#include <iomanip> 
 #include "Planet.hpp"
 #include "functions.hpp"
 
@@ -113,7 +114,8 @@ void calculateTotalEnergy(const std::vector<Planet>& planets) {
 
     float totalEnergy = totalKinetic + totalPotential;
 
-    std::cout << "Kinetic: " << totalKinetic
+    std::cout << std::scientific << std::setprecision(2)
+              << "Kinetic: " << totalKinetic
               << " Potential: " << totalPotential
               << " Total: " << totalEnergy << std::endl;
 }
