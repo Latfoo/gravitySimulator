@@ -15,7 +15,7 @@ void drawPlanet(Planet &planet){
     glBegin(GL_TRIANGLE_FAN);
     glVertex2d(planet.position.x, planet.position.y);
 
-    for(int i = 0; i < planet.res+1; i++){
+    for(size_t i = 0; i < planet.res+1; i++){
             float angle = 2.0f * M_PI * static_cast<float>(i)/planet.res;
             float x = planet.position.x + cos(angle) * planet.radius;
             float y = planet.position.y + sin(angle) * planet.radius;
