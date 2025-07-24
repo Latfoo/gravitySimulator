@@ -1,5 +1,3 @@
-// functions.hpp
-
 #pragma once
 
 #include <vector>
@@ -25,7 +23,7 @@ void checkEdgeProtection(Planet &planet);
  * @param b The second planet.
  * @return The gravitational force vector applied on planet a due to planet b.
  */
-glm::vec2 computeGravitationalForce(const Planet& a, const Planet& b);
+glm::vec3 computeGravitationalForce(const Planet& a, const Planet& b);  // ← changed from vec2
 
 /**
  * @brief Updates accelerations of all planets based on gravitational forces.

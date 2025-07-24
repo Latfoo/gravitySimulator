@@ -5,11 +5,11 @@ CXX = g++
 CXXFLAGS = -std=c++20 -Wall -I./include
 
 # Sources and output
-SRC = $(wildcard src/*.cpp)   # All .cpp files in src/
+SRC = $(wildcard src/*.cpp)
 OUT = app
 
 # Libraries to link
-LIBS = -lglfw -lGL -ldl -lm
+LIBS = -lglfw -lGL -lGLU -ldl -lm
 
 # Build rule
 all: $(OUT)

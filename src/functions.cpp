@@ -1,5 +1,3 @@
-// functions.cpp
-
 #include <GLFW/glfw3.h>
 #include <math.h>
 #include <iostream>
@@ -10,38 +8,61 @@
 #include "functions.hpp"
 
 
-void drawPlanet(Planet &planet){
+void drawPlanet(Planet &planet) {
+    glPushMatrix();
+    glTranslated(planet.position.x, planet.position.y, planet.position.z);
 
-    glBegin(GL_TRIANGLE_FAN);
-    glVertex2d(planet.position.x, planet.position.y);
+    const int layers = planet.res;
+    const int slices = planet.res;
+    const float radius = planet.radius;
 
-    for(size_t i = 0; i < planet.res+1; i++){
-            float angle = 2.0f * M_PI * static_cast<float>(i)/planet.res;
-            float x = planet.position.x + cos(angle) * planet.radius;
-            float y = planet.position.y + sin(angle) * planet.radius;
-            glVertex2d(x,y);
+    for (int i = 0; i < layers; ++i) {
+        float phi1 = M_PI * i / layers;
+        float phi2 = M_PI * (i + 1) / layers;
+
+        glBegin(GL_QUAD_STRIP);
+        for (int j = 0; j <= slices; ++j) {
+            float theta = 2.0f * M_PI * j / slices;
+
+            float x1 = radius * sin(phi1) * cos(theta);
+            float y1 = radius * cos(phi1);
+            float z1 = radius * sin(phi1) * sin(theta);
+
+            float x2 = radius * sin(phi2) * cos(theta);
+            float y2 = radius * cos(phi2);
+            float z2 = radius * sin(phi2) * sin(theta);
+
+            glNormal3f(x1 / radius, y1 / radius, z1 / radius);
+            glVertex3f(x1, y1, z1);
+
+            glNormal3f(x2 / radius, y2 / radius, z2 / radius);
+            glVertex3f(x2, y2, z2);
+        }
+        glEnd();
     }
 
-    glEnd();
+    glPopMatrix();
 }
 
 
-// Reverses velocity, if one of the screen edges is hit
-void checkEdgeProtection(Planet &planet){
+
+// Reverses velocity, if one of the screen edges is hit (currently non-functional in 3D)
+/*void checkEdgeProtection(Planet &planet){
     if (planet.position.x < planet.radius || planet.position.x > SCREEN_WIDTH - planet.radius) planet.velocity.x *= -1;
     if (planet.position.y < planet.radius || planet.position.y > SCREEN_HEIGHT - planet.radius) planet.velocity.y *= -1;
-}
+    if (planet.position.z < -500.0 || planet.position.z > 500.0) planet.velocity.z *= -1;
+}*/
 
 
 // Classical Newtonian Physics 
-glm::vec2 computeGravitationalForce(const Planet& a, const Planet& b) {
-    glm::vec2 r = b.position - a.position;
+glm::vec3 computeGravitationalForce(const Planet& a, const Planet& b) {
+    glm::vec3 r = b.position - a.position;
     float distanceSquared = glm::dot(r, r); 
     float distance = sqrt(distanceSquared);
 
-    if (distance < 1e-5f) return glm::vec2(0.0f);
+    if (distance < 1e-5f) return glm::vec3(0.0f);
 
-    glm::vec2 forceDir = glm::normalize(r);
+    glm::vec3 forceDir = glm::normalize(r);
     float forceMagnitude = (G * a.mass * b.mass) / distanceSquared;
     return forceDir * forceMagnitude;
 }
@@ -49,7 +70,7 @@ glm::vec2 computeGravitationalForce(const Planet& a, const Planet& b) {
 
 void updateAccelerations(std::vector<Planet> &planets) {
     for (auto& planet : planets) {
-        glm::vec2 netForce(0.0f);
+        glm::vec3 netForce(0.0f);
 
         for (const auto& other : planets) {
             if (&planet != &other) {
@@ -106,7 +127,7 @@ void calculateTotalEnergy(const std::vector<Planet>& planets) {
     // Potential energy V
     for (size_t i = 0; i < planets.size(); ++i) {
         for (size_t j = i + 1; j < planets.size(); ++j) {
-            glm::vec2 r = planets[j].position - planets[i].position;
+            glm::vec3 r = planets[j].position - planets[i].position;
             float dist = glm::length(r);
             totalPotential -= G * planets[i].mass * planets[j].mass / dist;
         }
