@@ -93,12 +93,26 @@ void checkAllCollisions(std::vector<Planet>& planets) {
     for (size_t i = 0; i < planets.size(); ++i) {
         for (size_t j = i + 1; j < planets.size(); ++j) {
             if (checkCollision(planets[i], planets[j])) {
-                planets[i].velocity *= -1.0f;
-                planets[j].velocity *= -1.0f;
+
+                Planet& a = planets[i];
+                Planet& b = planets[j];
+
+                glm::vec3 n = glm::normalize(a.position - b.position); // Normalized collision vector
+                glm::vec3 v_rel = a.velocity - b.velocity;
+                float v_rel_n = glm::dot(v_rel, n); // Projection of rel. velocity on the normal vector
+
+                if (v_rel_n >= 0) continue;
+
+                // Perfectly elastic collision: exchange of momentum along normal vector
+                glm::vec3 impulseVec = (2.0f * glm::dot(a.velocity - b.velocity, n) / (a.mass + b.mass)) * n;
+
+                a.velocity -= b.mass * impulseVec;
+                b.velocity += a.mass * impulseVec;
             }
         }
     }
 }
+
 
 
 void calculateMovement(std::vector<Planet> &planets, float deltaTime){
