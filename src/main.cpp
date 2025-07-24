@@ -8,6 +8,7 @@
 #include "Planet.hpp"
 #include "functions.hpp"
 #include "constants.hpp"
+#include "SimulationState.hpp"
 
 int main() {
 
@@ -70,6 +71,7 @@ int main() {
 
 
     // Rendering Loop
+    SimulationState simstate;
 
     float lastTime = glfwGetTime();
 
@@ -83,7 +85,7 @@ int main() {
 
         calculateMovement(planets, deltaTime);
         checkAllCollisions(planets);
-        calculateTotalEnergy(planets);
+        calculateTotalEnergy(planets, simstate);
         
         for(auto& planet : planets){
             drawPlanet(planet);

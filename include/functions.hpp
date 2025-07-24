@@ -4,6 +4,7 @@
 #include <glm/glm.hpp>
 #include "Planet.hpp"
 #include "constants.hpp"
+#include "SimulationState.hpp"
 
 /**
  * @brief Draws a filled circle representing a planet using OpenGL.
@@ -53,7 +54,9 @@ void checkAllCollisions(std::vector<Planet>& planets);
 void calculateMovement(std::vector<Planet> &planets, float deltaTime);
 
 /**
- * @brief Computes and prints the total kinetic, potential, and total energy of the system.
- * @param planets Vector of planets to calculate energy for.
+ * @brief Calculates and logs the system's total kinetic, potential, and total energy.
+ * @param planets   Vector of Planet objects representing the current simulation state.
+ * @param simstate  Reference to a SimulationState object where energy values will be stored.
  */
-void calculateTotalEnergy(const std::vector<Planet>& planets);
+void calculateTotalEnergy(const std::vector<Planet>& planets, SimulationState& simstate);
+

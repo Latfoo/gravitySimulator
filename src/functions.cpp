@@ -6,6 +6,7 @@
 #include <iomanip> 
 #include "Planet.hpp"
 #include "functions.hpp"
+#include "SimulationState.hpp"
 
 
 void drawPlanet(Planet &planet) {
@@ -129,7 +130,7 @@ void calculateMovement(std::vector<Planet> &planets, float deltaTime){
     }
 }
 
-void calculateTotalEnergy(const std::vector<Planet>& planets) {
+void calculateTotalEnergy(const std::vector<Planet>& planets, SimulationState &simstate) {
     float totalKinetic = 0.0f;
     float totalPotential = 0.0f;
 
@@ -149,6 +150,13 @@ void calculateTotalEnergy(const std::vector<Planet>& planets) {
 
     float totalEnergy = totalKinetic + totalPotential;
 
+    // Store Data for Graphical Interface
+    simstate.energyKinetic.push_back(totalKinetic);
+    simstate.energyPotential.push_back(totalPotential);
+    simstate.energyTotal.push_back(totalEnergy);
+    simstate.trim(); // trims buffer vectors if they get too large
+
+    // Console output
     std::cout << std::scientific << std::setprecision(2)
               << "Kinetic: " << totalKinetic
               << " Potential: " << totalPotential
