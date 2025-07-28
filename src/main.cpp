@@ -74,10 +74,11 @@ int main() {
     SimulationState simstate;
 
     float lastTime = glfwGetTime();
+    int frame_count = 0;
 
     while (!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-;
+
 
         float currentTime = glfwGetTime();
         float deltaTime = currentTime - lastTime;
@@ -90,6 +91,8 @@ int main() {
         for(auto& planet : planets){
             drawPlanet(planet);
         }
+
+        if(VIDEO == true) if (VIDEO) capture_frame(frame_count++, "video_frames", "frame"); // captures frames for video creation
 
         glfwSwapBuffers(window);
         glfwPollEvents();

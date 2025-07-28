@@ -4,6 +4,8 @@ This is a personal project where I'm learning to build a real-time simulation of
 
 It's my first try at actually building something in c++ outside of university and academic exercises. Starting simple and gradually improving accuracy and features as I go.
 
+![Simulation Preview](preview.gif)
+
 ## Notes
 
 - The code is work in progress

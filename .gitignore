@@ -16,4 +16,10 @@ core
 # Ignore other editor temp files
 *.tmp
 
+# Ignore mp4 files
+*.mp4
+
+# Ignore directories
 .vscode/
+video_frames/
+
