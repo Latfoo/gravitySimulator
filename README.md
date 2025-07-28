@@ -4,7 +4,11 @@ This is a personal project where I'm learning to build a real-time simulation of
 
 It's my first try at actually building something in c++ outside of university and academic exercises. Starting simple and gradually improving accuracy and features as I go.
 
+## Simulation Preview
+
 ![Simulation Preview](preview.gif)
+
+> ⚠️ This is a GIF preview. Hence some stuttering or quality loss.
 
 ## Notes
 
@@ -14,7 +18,6 @@ It's my first try at actually building something in c++ outside of university an
 
 ## Goals
 
-- Add .gif to README.md
 - Plot or log energy to be able to compare different numerical methods (e.g. Euler vs Runge-Kutta vs Leapfrog)
 - Build an UI
 - Make it interactive

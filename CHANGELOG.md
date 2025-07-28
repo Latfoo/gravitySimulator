@@ -1,5 +1,11 @@
 # Changelog
 
+## [v0.5] - 2025-07-28
+### Features
+- Added optional frame capture functionality for recording simulation frames.
+- When `VIDEO` is set to `true`, frames are saved to `video_frames/` and can be converted to `output.mp4` via `make video`.
+- This allows exporting simulation runs for sharing.
+
 ## [v0.4] - 2025-07-24
 ### Features
 - Introduced `SimulationState` struct to manage energy data and enable future features.
