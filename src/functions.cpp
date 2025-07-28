@@ -11,9 +11,6 @@
 #include "functions.hpp"
 #include "SimulationState.hpp"
 
-#define STB_IMAGE_WRITE_IMPLEMENTATION
-#include "stb_image_write.h"
-
 
 void drawPlanet(Planet &planet) {
     glPushMatrix();
