@@ -92,7 +92,7 @@ int main() {
             drawPlanet(planet);
         }
 
-        if(VIDEO == true) if (VIDEO) capture_frame(frame_count++, "video_frames", "frame"); // captures frames for video creation
+        if(VIDEO) capture_frame(frame_count++, "video_frames", "frame"); // captures frames for video creation
 
         glfwSwapBuffers(window);
         glfwPollEvents();
