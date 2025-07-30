@@ -61,13 +61,3 @@ void calculateMovement(std::vector<Planet> &planets, float deltaTime);
  * @param simstate  Reference to a SimulationState object where energy values will be stored.
  */
 void calculateTotalEnergy(const std::vector<Planet>& planets, SimulationState& simstate);
-
-
-
-/**
- * @brief Captures the current OpenGL framebuffer and saves it as a PNG image.
- * @param frame_number The frame index to include in the output filename (e.g., 42 becomes frame_0042.png).
- * @param folder The folder where image files will be saved (default: "video_frames").
- * @param prefix The filename prefix for saved frames (default: "frame").
- */
-void capture_frame(int frame_number, const std::string& folder = "video_frames", const std::string& prefix = "frame");

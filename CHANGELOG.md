@@ -1,5 +1,11 @@
 # Changelog
 
+## [v0.6] - 2025-07-30
+### Technical Improvements
+- Removed video recording functionality to simplify cross-platform builds.
+- Migrated from Makefile to CMake for modern cross-platform build configuration.
+- Added platform-specific build instructions for Linux and macOS to the README.
+
 ## [v0.5] - 2025-07-28
 ### Features
 - Added optional frame capture functionality for recording simulation frames.

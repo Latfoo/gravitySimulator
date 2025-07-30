@@ -22,4 +22,5 @@ core
 # Ignore directories
 .vscode/
 video_frames/
+build/
 

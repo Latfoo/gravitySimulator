@@ -165,38 +165,3 @@ void calculateTotalEnergy(const std::vector<Planet>& planets, SimulationState &s
               << " Potential: " << totalPotential
               << " Total: " << totalEnergy << std::endl;
 }
-
-
-void capture_frame(int frame_number, const std::string& folder, const std::string& prefix) {
-    using namespace std;
-
-    std::filesystem::create_directories(folder);
-
-    int width, height;
-    glfwGetFramebufferSize(glfwGetCurrentContext(), &width, &height);
-
-    std::vector<unsigned char> pixels(width * height * 3);
-    glPixelStorei(GL_PACK_ALIGNMENT, 1);
-    glReadPixels(0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, pixels.data());
-
-    // Flip image vertically for correct orientation
-    for (int y = 0; y < height / 2; ++y) {
-        int top = y * width * 3;
-        int bottom = (height - 1 - y) * width * 3;
-        for (int x = 0; x < width * 3; ++x) {
-            std::swap(pixels[top + x], pixels[bottom + x]);
-        }
-    }
-
-    std::ostringstream filename;
-    filename << folder << "/" << prefix << "_" << std::setw(4) << std::setfill('0') << frame_number << ".ppm";
-
-    std::ofstream out(filename.str(), std::ios::binary);
-    if (!out) {
-        std::cerr << "Failed to open file: " << filename.str() << std::endl;
-        return;
-    }
-
-    out << "P6\n" << width << " " << height << "\n255\n";
-    out.write(reinterpret_cast<char*>(pixels.data()), pixels.size());
-}
