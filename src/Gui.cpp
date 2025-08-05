@@ -47,7 +47,6 @@ void GuiRender(SimulationState& simstate, float dt_ms, bool& paused, int& integr
         ImPlot::EndPlot();
     }
 
-
     // Display Relative Energy Error
     if (simstate.energyError.empty()) {
         ImGui::Text("Relative Energy Error: n/a");
@@ -56,8 +55,6 @@ void GuiRender(SimulationState& simstate, float dt_ms, bool& paused, int& integr
         ImGui::Text("Absolute Relative Energy Error: %.3e", rel);
     }
 
-
-    // Plot absolute relative error on log scale with fixed X start and "only grow" Y axis
     // Plot absolute relative error on linear scale with fixed X start and "only grow" Y axis
     if (!simstate.energyError.empty()) {
         static double yMax = 0.0;       // start at 0 for linear scale

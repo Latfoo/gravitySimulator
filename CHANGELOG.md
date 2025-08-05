@@ -1,5 +1,19 @@
 # Changelog
 
+## [v0.7] - 2025-08-06
+### Features
+- Integrated ImGui and ImPlot for an interactive Simulation HUD.
+- Integrated different numerical integrators.
+- Added GUI controls for:
+  - Pausing/resuming the simulation.
+  - Switching between different numerical integrators:
+    - Explicit Euler
+    - Semi-implicit Euler
+    - Leapfrog
+    - Runge–Kutta 4
+- Implemented relative energy error tracking based on initial total energy.
+- Displayed current relative error in the GUI and added plot showing its change over simulation frames.
+
 ## [v0.6] - 2025-07-30
 ### Technical Improvements
 - Removed video recording functionality to simplify cross-platform builds.
