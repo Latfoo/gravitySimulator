@@ -4,11 +4,37 @@ project(GravitySim LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# Project sources
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS src/*.cpp)
-include_directories(include)
 
+# Third-party directories
+set(IMGUI_DIR ${CMAKE_SOURCE_DIR}/include/imgui)
+set(IMPLOT_DIR ${CMAKE_SOURCE_DIR}/include/implot)
+
+# ImGui / ImPlot sources
+list(APPEND SOURCES
+    ${IMGUI_DIR}/imgui.cpp
+    ${IMGUI_DIR}/imgui_draw.cpp
+    ${IMGUI_DIR}/imgui_tables.cpp
+    ${IMGUI_DIR}/imgui_widgets.cpp
+    ${IMGUI_DIR}/backends/imgui_impl_glfw.cpp
+    ${IMGUI_DIR}/backends/imgui_impl_opengl2.cpp
+    ${IMPLOT_DIR}/implot.cpp
+    ${IMPLOT_DIR}/implot_items.cpp
+)
+
+# Executable
 add_executable(GravitySim ${SOURCES})
 
+# Include paths
+target_include_directories(GravitySim PRIVATE
+    ${CMAKE_SOURCE_DIR}/include
+    ${IMGUI_DIR}
+    ${IMGUI_DIR}/backends
+    ${IMPLOT_DIR}
+)
+
+# Dependencies
 find_package(glfw3 REQUIRED)
 
 if(APPLE)
@@ -16,7 +42,7 @@ if(APPLE)
         glfw
         "-framework OpenGL"
     )
-else()  # Linux
+else() # Linux
     find_package(OpenGL REQUIRED)
     target_link_libraries(GravitySim
         glfw
@@ -26,4 +52,4 @@ else()  # Linux
         m
         pthread
     )
-    endif()
+endif()

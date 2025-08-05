@@ -9,6 +9,8 @@
 #include "functions.hpp"
 #include "constants.hpp"
 #include "SimulationState.hpp"
+#include "Gui.hpp"
+
 
 int main() {
 
@@ -40,6 +42,9 @@ int main() {
     glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
     glEnable(GL_COLOR_MATERIAL);
     glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
+
+    // Gui Initialization
+    GuiInit(window);
     
     // --------------------- Simulation -------------------------
 
@@ -75,22 +80,24 @@ int main() {
 
     float lastTime = glfwGetTime();
     int frame_count = 0;
+    bool paused = false;
 
     while (!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        float now = glfwGetTime();
+        float deltaTime = now - lastTime;
+        lastTime = now;
 
-
-        float currentTime = glfwGetTime();
-        float deltaTime = currentTime - lastTime;
-        lastTime = currentTime;
-
-        calculateMovement(planets, deltaTime);
-        checkAllCollisions(planets);
-        calculateTotalEnergy(planets, simstate);
-        
-        for(auto& planet : planets){
-            drawPlanet(planet);
+        if (!paused) {
+            calculateMovement(planets, deltaTime);
+            checkAllCollisions(planets);
+            calculateTotalEnergy(planets, simstate);
         }
+
+        for (auto& planet : planets) drawPlanet(planet);
+
+        GuiNewFrame();
+        GuiRender(simstate, deltaTime * 1000.0f, paused);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -100,6 +107,7 @@ int main() {
     // --------------------- Terminate Window -------------------------
 
     glfwDestroyWindow(window);
+    GuiShutdown();
     glfwTerminate();
     return 0;
 }
