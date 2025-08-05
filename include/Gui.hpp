@@ -20,8 +20,9 @@ void GuiNewFrame();
  * @param simstate Reference to the SimulationState.
  * @param dt_ms    Delta time for the last frame in milliseconds.
  * @param paused   Reference to the simulation pause boolean, allowing toggling physics on and off.
+ * @param integratorChoice Reference to the integer representing the selected numerical integrator.
  */
-void GuiRender(SimulationState& simstate, float dt_ms, bool& paused);
+void GuiRender(SimulationState& simstate, float dt_ms, bool& paused, int& integratorChoice);
 
 /**
  * @brief Clean up ImGui and ImPlot contexts.

@@ -81,6 +81,7 @@ int main() {
     float lastTime = glfwGetTime();
     int frame_count = 0;
     bool paused = false;
+    int integratorChoice = 1; // default to Leapfrog
 
     while (!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -89,7 +90,7 @@ int main() {
         lastTime = now;
 
         if (!paused) {
-            calculateMovement(planets, deltaTime);
+            calculateMovement(planets, deltaTime, integratorChoice);
             checkAllCollisions(planets);
             calculateTotalEnergy(planets, simstate);
         }
@@ -97,7 +98,7 @@ int main() {
         for (auto& planet : planets) drawPlanet(planet);
 
         GuiNewFrame();
-        GuiRender(simstate, deltaTime * 1000.0f, paused);
+        GuiRender(simstate, deltaTime * 1000.0f, paused, integratorChoice);
 
         glfwSwapBuffers(window);
         glfwPollEvents();

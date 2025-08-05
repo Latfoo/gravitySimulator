@@ -52,8 +52,9 @@ void checkAllCollisions(std::vector<Planet>& planets);
  * @brief Calculates new positions and velocities of planets based on accelerations and time elapsed.
  * @param planets Vector of planets to update.
  * @param deltaTime Time elapsed since last update.
+ * @param integratorChoice Choice of numerical integrator: 0 = Semi-Implicit Euler, 1 = Leapfrog, 2 = Runge-Kutta 4.
  */
-void calculateMovement(std::vector<Planet> &planets, float deltaTime);
+void calculateMovement(std::vector<Planet>& planets, float deltaTime, int integratorChoice);
 
 /**
  * @brief Calculates and logs the system's total kinetic, potential, and total energy.

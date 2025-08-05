@@ -10,6 +10,7 @@
 #include "Planet.hpp"
 #include "functions.hpp"
 #include "SimulationState.hpp"
+#include "NumericalIntegrators.hpp"
 
 
 void drawPlanet(Planet &planet) {
@@ -119,17 +120,23 @@ void checkAllCollisions(std::vector<Planet>& planets) {
 
 
 
-void calculateMovement(std::vector<Planet> &planets, float deltaTime){
-
-    updateAccelerations(planets); 
-
-    for(auto& planet : planets){
-
-        // Euler(semi-implicit)
-        planet.velocity += planet.acceleration * deltaTime;
-        planet.position += planet.velocity * deltaTime;
-
-        if(EDGES) checkEdgeProtection(planet);
+void calculateMovement(std::vector<Planet>& planets, float deltaTime, int integratorChoice) {
+    switch (integratorChoice) {
+        case 0:
+            explicitEuler(planets, deltaTime);
+            break;
+        case 1:
+            semiImplicitEuler(planets, deltaTime);
+            break;
+        case 2:
+            leapFrog(planets, deltaTime);
+            break;
+        case 3:
+            rungeKutta4(planets, deltaTime);
+            break;
+        default:
+            semiImplicitEuler(planets, deltaTime);
+            break;
     }
 }
 
@@ -153,10 +160,21 @@ void calculateTotalEnergy(const std::vector<Planet>& planets, SimulationState &s
 
     float totalEnergy = totalKinetic + totalPotential;
 
+    // --- Compute Absolute relative Error ---
+     if (!simstate.baselineSet) {               // Set baseline on first sample
+        simstate.initialTotalEnergy = totalEnergy;
+        simstate.baselineSet = true;
+    }
+    float relError = 0.0f;
+    if (simstate.initialTotalEnergy != 0.0f) {
+        relError = abs((totalEnergy - simstate.initialTotalEnergy) / simstate.initialTotalEnergy);
+    }
+
     // Store Data for Graphical Interface
     simstate.energyKinetic.push_back(totalKinetic);
     simstate.energyPotential.push_back(totalPotential);
     simstate.energyTotal.push_back(totalEnergy);
+    simstate.energyError.push_back(relError);   
     simstate.trim(); // trims buffer vectors if they get too large
 
     // Console output
