@@ -74,6 +74,7 @@ int main() {
     {5.f, 50, 1e21f, {300.f, 300.f, 300.f}, {-45.f, -45.f, -45.f}, {0.f, 0.f, 0.f}},
     };
 
+    std::vector<Planet> initialPlanets = planets; // backup for reset functionality
 
     // Rendering Loop
     SimulationState simstate;
@@ -82,6 +83,7 @@ int main() {
     int frame_count = 0;
     bool paused = false;
     int integratorChoice = 1; // default to Leapfrog
+    bool resetRequested = false;
 
     while (!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -98,7 +100,14 @@ int main() {
         for (auto& planet : planets) drawPlanet(planet);
 
         GuiNewFrame();
-        GuiRender(simstate, deltaTime * 1000.0f, paused, integratorChoice);
+        GuiRender(simstate, deltaTime * 1000.0f, paused, integratorChoice, resetRequested);
+        if (resetRequested) {
+            planets = initialPlanets;
+            simstate.resetEnergyData();
+            lastTime = glfwGetTime();
+            paused = false;
+            resetRequested = false;
+        }
 
         glfwSwapBuffers(window);
         glfwPollEvents();

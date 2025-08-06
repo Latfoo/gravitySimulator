@@ -20,10 +20,14 @@ void GuiNewFrame() {
     ImGui::NewFrame();
 }
 
-void GuiRender(SimulationState& simstate, float dt_ms, bool& paused, int& integratorChoice) {
+void GuiRender(SimulationState& simstate, float dt_ms, bool& paused, int& integratorChoice, bool& resetRequested) {
     ImGui::Begin("Simulation HUD");
     ImGui::Text("Frame dt: %.3f ms (%.1f FPS)", dt_ms, dt_ms > 0 ? 1000.0f/dt_ms : 0.0f);
     ImGui::Checkbox("Pause physics", &paused);
+    
+    if (ImGui::Button("Reset Simulation")) {
+        resetRequested = true;
+    }
 
     const char* methods[] = { "Explicit Euler", "Semi-implicit Euler", "Leapfrog", "RK4" };
     static int lastIntegratorChoice = integratorChoice; // remember previous choice
