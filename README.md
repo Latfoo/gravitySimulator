@@ -6,24 +6,28 @@ It's my first try at actually building something in C++ outside of university an
 
 ## Simulation Preview
 
-[![Short Demo Video](output/preview.gif)](output/demo_video.mp4)
+### Video
+
+[![Short Demo Video](https://Latfoo.github.io/gravitySimulator/preview.gif)](https://Latfoo.github.io/gravitySimulator/demo_video.mp4)
 > ⚠️ This is a GIF preview. Hence some stuttering or quality loss. Click the GIF to see a short demo video including GUI!
+
+### GUI Preview
+![GUI Preview](https://Latfoo.github.io/gravitySimulator/gui_demo.png)
+
 
 ## Notes
 
 - The code is work in progress
 - Currently only tested and built in Linux Ubuntu
 - [`CHANGELOG.md`](./CHANGELOG.md) documents current features and development steps
-- Built with C++, OpenGL, GLFW
+- Built with C++, OpenGL, GLFW, Imgui, Implot
 
-## Goals
+## Further Goals
 
-- Plot or log energy to be able to compare different numerical methods (e.g. Euler vs Runge-Kutta vs Leapfrog)
-- Build an UI
-- Make it interactive
+- Make it interactive --> enable manual configuration of initial conditions via GUI Window
 - Improve physical accuracy and structure over time
-- Learn by building, not just reading
 - Make it cross-platform compatible
+- Learn by building, not just reading
 
 ## Build
 
