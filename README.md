@@ -6,9 +6,8 @@ It's my first try at actually building something in C++ outside of university an
 
 ## Simulation Preview
 
-![Simulation Preview](preview.gif)
-
-> ⚠️ This is a GIF preview. Hence some stuttering or quality loss.
+[![Short Demo Video](output/preview.gif)](output/demo_video.mp4)
+> ⚠️ This is a GIF preview. Hence some stuttering or quality loss. Click the GIF to see a short demo video including GUI!
 
 ## Notes
 
