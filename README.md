@@ -1,8 +1,10 @@
 # Real-Time Gravity Simulation (C++)
 
-This is a personal project where I'm learning to build a real-time simulation of celestial bodies using C++. It started as a simple 2D circle jumping up and down modelled by pure kinematics. Until now the simulation evolved from only kinematics to kinetics as well as from 2D to 3D. It now models Newtonian gravity and perfect elastic collisions between spherical objects, visualized in 3D with OpenGL.
+This is a personal project where I'm learning to build a real-time simulation of celestial bodies using C++. It began as a simple 2D circle bouncing under gravity, modeled with basic kinematics. Since then, the simulation has evolved significantly: from kinematics to full Newtonian kinetics, and from 2D to 3D.
 
-It's my first try at actually building something in C++ outside of university and academic exercises. Starting simple and gradually improving accuracy and features as I go.
+It now models gravitational interactions and perfectly elastic collisions between spherical objects, visualized in 3D using legacy OpenGL. A minimal GUI has been added to experiment with and observe the relative error of different numerical integrators. The GUI also includes controls for interacting with and managing the simulation at runtime.
+
+This is my first attempt at building a full C++ application outside of university or academic exercises. Starting simple and steadily adding features and accuracy as I learn.
 
 ## Simulation Preview
 

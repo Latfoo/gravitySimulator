@@ -1,5 +1,19 @@
 # Changelog
 
+## [v0.8] - 2025-08-08
+
+### Features
+- Implemented orbit-style interactive 3D camera using OpenGL:
+  - Mouse-based rotation (yaw and pitch)
+  - Middle-click panning
+  - Scroll-wheel zooming
+- Camera orbits around a central point (e.g., origin) with pan and zoom constraints.
+- Added GUI button to reset the camera to its default view.
+
+### Technical Improvements
+- Refactored main render loop for readability
+
+
 ## [v0.7] - 2025-08-06
 ### Features
 - Integrated ImGui and ImPlot for an interactive Simulation HUD.
@@ -28,39 +42,38 @@
 
 ## [v0.4] - 2025-07-24
 ### Features
+- Completed 3D refactor! (screen edge protection commented out for now).
 - Introduced `SimulationState` struct to manage energy data and enable future features.
 - Improved collision behavior using real conservation of energy and momentum of perfectly elastic collisions.
-- Completed 3D refactor (screen edge protection commented out).
 
 ## [v0.3] - 2025-07-19
 ### Enhancements
-- Added total energy calculation for system stability analysis.
+- Added total energy calculation for future system stability analysis.
 - Added energy values to console output.
 - Added minimal collision detection (initial version; velocity vector is just reversed).
 - General code refactor with function descriptions.
 - Renamed main file for clarity.
 
 ### Technical Improvements
-- Removed `.vscode` folder from version control.
 - Fixed C++ loop to comply with modern standards (`size_t`).
 - Created `LICENSE` file.
 
 ## [v0.2] - 2025-07-16
 ### Major Refactor
 - Transitioned to using GLM for vector math.
-- Implemented basic Newtonian gravity.
+- Implemented basic Newtonian gravity in 2D.
 - Enabled scalable multi-planet simulation support.
 - Restructured project layout.
 - Introduced modular design with separate `.hpp` files.
 
 ### Visual & Physics Features
-- Created circle struct and drawing function.
+- Created circle struct and circle drawing function.
 - Enabled/disabled screen border functionality.
-- Applied basic kinematics with fixed acceleration.
 
 ## [v0.1] - 2025-07-16
 ### Initial Release
 - Initialized project with GLFW window.
 - Basic 2D simulation setup.
+- Applied basic kinematics with fixed acceleration.
 - Numerical integration by semi-implicit Euler method.
 
