@@ -15,7 +15,7 @@
 
 int main() {
 
-    // --------------------- GLFW and OpenGL Setup -------------------------
+    // ==================== GLFW and OpenGL Setup ========================
 
     if (!glfwInit()) return -1;
     glfwWindowHint(GLFW_DEPTH_BITS, 24);
@@ -46,9 +46,9 @@ int main() {
     // Gui Initialization
     GuiInit(window);
     
-    // --------------------- Simulation -------------------------
+    // ======================= Simulation ==========================
 
-    // Initial Conditions for Planets
+    // ------------Initial Conditions ----------------
 
     std::vector<Planet> planets = {
     // stationary Planet at the origin
@@ -76,7 +76,6 @@ int main() {
 
     std::vector<Planet> initialPlanets = planets; // backup for reset functionality
 
-    // Rendering Loop
     SimulationState simstate;
 
     float lastTime = glfwGetTime();
@@ -86,28 +85,39 @@ int main() {
     bool resetRequested = false;
     bool cameraResetRequested = false;
 
+    
+    // ---------------- Rendering Loop -------------------
+
     while (!glfwWindowShouldClose(window)) {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        // Time Update
         float now = glfwGetTime();
         float deltaTime = now - lastTime;
         lastTime = now;
 
+        // Clear Buffers and apply Camera View
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         camera.applyView();
 
+        // Lightning
         GLfloat lightPos[] = { 2500.0f, 5000.0f, 5000.0f, 1.0f };
         glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
 
-
+        // Pause Simulation
         if (!paused) {
             calculateMovement(planets, deltaTime, integratorChoice);
             checkAllCollisions(planets);
             calculateTotalEnergy(planets, simstate);
         }
 
-        for (auto& planet : planets) drawPlanet(planet);
+        // Rendering Planets
+        for (auto& planet : planets){
+            drawPlanet(planet);
+        }
 
+        // GUI
         GuiNewFrame();
         GuiRender(simstate, deltaTime * 1000.0f, paused, integratorChoice, resetRequested, cameraResetRequested);
+
         if (resetRequested) {
             planets = initialPlanets;
             simstate.resetEnergyData();
@@ -115,14 +125,17 @@ int main() {
             paused = false;
             resetRequested = false;
         }
-        if(cameraResetRequested) {
+
+        if (cameraResetRequested) {
             camera.reset();
             cameraResetRequested = false;
         }
 
+        // Swap Buffers and Poll Events
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
+
 
 
     // --------------------- Terminate Window -------------------------
