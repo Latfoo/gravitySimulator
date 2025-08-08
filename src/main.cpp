@@ -10,6 +10,7 @@
 #include "constants.hpp"
 #include "SimulationState.hpp"
 #include "Gui.hpp"
+#include "camera_controls.hpp"
 
 
 int main() {
@@ -25,21 +26,20 @@ int main() {
     }
     glfwMakeContextCurrent(window);
 
+    CameraControls camera;
+    camera.installCallbacks(window);
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(45.0, SCREEN_WIDTH / (float)SCREEN_HEIGHT, 1.0, 10000.0);
     glMatrixMode(GL_MODELVIEW);
-    gluLookAt(0.0, 0.0, 2300.0, // Camera Position
-          0.0, 0.0, 0.0, 
-          0.0, 1.0, 0.0);
+    
     glEnable(GL_DEPTH_TEST);
     glClearColor(0, 0, 0, 1);
 
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
-    GLfloat lightPos[] = { 2500.0f, 5000.0f, 5000.0f, 0.5f }; //Light Position
-    glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
+    GLfloat lightPos[] = { 2500.0f, 5000.0f, 5000.0f, 0.5f }; // Initial Light Position
     glEnable(GL_COLOR_MATERIAL);
     glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
 
@@ -90,6 +90,12 @@ int main() {
         float now = glfwGetTime();
         float deltaTime = now - lastTime;
         lastTime = now;
+
+        camera.applyView();
+
+        GLfloat lightPos[] = { 2500.0f, 5000.0f, 5000.0f, 1.0f };
+        glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
+
 
         if (!paused) {
             calculateMovement(planets, deltaTime, integratorChoice);
