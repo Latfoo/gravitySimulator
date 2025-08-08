@@ -22,8 +22,9 @@ void GuiNewFrame();
  * @param paused   Reference to the simulation pause boolean, allowing toggling physics on and off.
  * @param integratorChoice Reference to the integer representing the selected numerical integrator.
  * @param resetRequested Reference to a boolean that indicates if a reset has been requestedv via the GUI.
+ * @param cameraResetRequested Reference to a boolean that indicates if a camera reset has been requested.
  */
-void GuiRender(SimulationState& simstate, float dt_ms, bool& paused, int& integratorChoice, bool& resetRequested);
+void GuiRender(SimulationState& simstate, float dt_ms, bool& paused, int& integratorChoice, bool& resetRequested, bool& cameraResetRequested);
 
 /**
  * @brief Clean up ImGui and ImPlot contexts.

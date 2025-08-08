@@ -84,6 +84,7 @@ int main() {
     bool paused = false;
     int integratorChoice = 1; // default to Leapfrog
     bool resetRequested = false;
+    bool cameraResetRequested = false;
 
     while (!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -106,13 +107,17 @@ int main() {
         for (auto& planet : planets) drawPlanet(planet);
 
         GuiNewFrame();
-        GuiRender(simstate, deltaTime * 1000.0f, paused, integratorChoice, resetRequested);
+        GuiRender(simstate, deltaTime * 1000.0f, paused, integratorChoice, resetRequested, cameraResetRequested);
         if (resetRequested) {
             planets = initialPlanets;
             simstate.resetEnergyData();
             lastTime = glfwGetTime();
             paused = false;
             resetRequested = false;
+        }
+        if(cameraResetRequested) {
+            camera.reset();
+            cameraResetRequested = false;
         }
 
         glfwSwapBuffers(window);
