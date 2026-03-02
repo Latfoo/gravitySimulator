@@ -24,6 +24,26 @@ This is my first attempt at building a full C++ application outside of universit
 - [`CHANGELOG.md`](./CHANGELOG.md) documents current features and development steps
 - Built with C++, OpenGL, GLFW, Imgui, Implot
 
+## Scalability
+
+The simulation uses a direct N-body approach where every pair of bodies interacts gravitationally, resulting in O(N²) force evaluations per frame. This is the main bottleneck when scaling to larger body counts.
+
+### Current optimizations
+- **Newton's third law**: Each pair is evaluated once instead of twice, halving the number of force computations.
+
+### On multithreading (OpenMP)
+
+Parallelizing the force loop across CPU cores is the obvious next step, but it comes with a tradeoff. The Newton's third law optimization requires both bodies in a pair to be updated simultaneously, which introduces write conflicts between threads. The clean alternative is to give each body its own independent loop over all others: Safe to parallelize, but at the cost of redundant (2x) force evaluations.
+
+Whether this tradeoff is worthwhile depends on the number of bodies and available cores:
+
+| Bodies   | Parallel worth it?                |
+|----------|-----------------------------------|
+| < 100    | No — thread overhead dominates    |
+| ~100–200 | Marginal — roughly break-even     |
+| 500+     | Yes — clear speedup              |
+| 1,000+   | Essential                         |
+
 ## Further Goals
 
 - Make it interactive --> enable manual configuration of initial conditions via GUI Window
