@@ -74,16 +74,19 @@ glm::vec3 computeGravitationalForce(const Planet& a, const Planet& b) {
 
 
 void updateAccelerations(std::vector<Planet> &planets) {
-    for (auto& planet : planets) {
-        glm::vec3 netForce(0.0f);
+    const size_t n = planets.size();
 
-        for (const auto& other : planets) {
-            if (&planet != &other) {
-                netForce += computeGravitationalForce(planet, other);
-            }
+    // Zero out accelerations
+    for (size_t i = 0; i < n; ++i)
+        planets[i].acceleration = glm::vec3(0.0f);
+
+    // Compute each pair once, apply Newton's third law
+    for (size_t i = 0; i < n; ++i) {
+        for (size_t j = i + 1; j < n; ++j) {
+            glm::vec3 force = computeGravitationalForce(planets[i], planets[j]);
+            planets[i].acceleration += force / planets[i].mass;
+            planets[j].acceleration -= force / planets[j].mass;
         }
-
-        planet.acceleration = netForce / planet.mass;
     }
 }
 
