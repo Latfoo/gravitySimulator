@@ -95,8 +95,13 @@ cmake --build .
 ```
 Run the simulation:
 ```bash
-./GravitySim
+# With default scene file
+./GravitySim ../scene.json
+
+# Or with a custom scene file (e.g. from an API or script)
+./GravitySim /path/to/custom_scene.json
 ```
+If no argument is given and no `scene.json` is found, the simulation falls back to a built-in default scene.
 
 ## Author
 Latfoo

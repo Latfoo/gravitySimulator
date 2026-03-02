@@ -9,9 +9,10 @@
 #include "SimulationState.hpp"
 #include "Gui.hpp"
 #include "camera_controls.hpp"
+#include "SceneLoader.hpp"
 
 
-int main() {
+int main(int argc, char* argv[]) {
 
     // ==================== GLFW and OpenGL Setup ========================
 
@@ -48,29 +49,22 @@ int main() {
 
     // ------------Initial Conditions ----------------
 
-    std::vector<Planet> planets = {
-    // stationary Planet at the origin
-    {80.f, 50, 5.972e24f, {0.f, 0.f, 0.f}, {0.f, 0.f, 0.0f}, {0.f, 0.f, 0.f}},
+    std::string scenePath = (argc > 1) ? argv[1] : "scene.json";
+    std::vector<Planet> planets = loadScene(scenePath);
 
-    // Moon-like object approaching from the left
-    {20.f, 50, 7.348e22f, {-500.f, 0.f, 0.f}, {0.f, 75.f, 50.f}, {0.f, 0.f, 0.f}},
-
-    // Another moon-like object coming from the right
-    {20.f, 50, 7.348e22f, {600.f, 0.f, 0.f}, {0.f, -68.f, -30.f}, {0.f, 0.f, 0.f}},  
-
-    // Small planet falling straight down toward Earth
-    {10.f, 50, 1e22f, {0.f, 500.f, 0.f}, {0.f, -60.f, 0.f}, {0.f, 0.f, 0.f}},
-
-    // Diagonal moving body from the lower right
-    {15.f, 50, 2e22f, {800.f, -400.f, 200.f}, {-70.f, 55.f, -10.f}, {0.f, 0.f, 0.f}},
-
-    // Distant massive body - stationary and far from center
-    {25.f, 50, 1e23f, {1500.f, 1500.f, -1500.f}, {0.f, 0.f, 0.f}, {0.f, 0.f, 0.f}},
-
-    // Two small bodies heading directly toward each other through the center
-    {5.f, 50, 1e21f, {-300.f, -300.f, -300.f}, {45.f, 45.f, 45.f}, {0.f, 0.f, 0.f}},
-    {5.f, 50, 1e21f, {300.f, 300.f, 300.f}, {-45.f, -45.f, -45.f}, {0.f, 0.f, 0.f}},
-    };
+    if (planets.empty()) {
+        std::cout << "Using default hardcoded scene.\n";
+        planets = {
+            {80.f, 50, 5.972e24f, {0.f, 0.f, 0.f}, {0.f, 0.f, 0.0f}, {0.f, 0.f, 0.f}},
+            {20.f, 50, 7.348e22f, {-500.f, 0.f, 0.f}, {0.f, 75.f, 50.f}, {0.f, 0.f, 0.f}},
+            {20.f, 50, 7.348e22f, {600.f, 0.f, 0.f}, {0.f, -68.f, -30.f}, {0.f, 0.f, 0.f}},
+            {10.f, 50, 1e22f, {0.f, 500.f, 0.f}, {0.f, -60.f, 0.f}, {0.f, 0.f, 0.f}},
+            {15.f, 50, 2e22f, {800.f, -400.f, 200.f}, {-70.f, 55.f, -10.f}, {0.f, 0.f, 0.f}},
+            {25.f, 50, 1e23f, {1500.f, 1500.f, -1500.f}, {0.f, 0.f, 0.f}, {0.f, 0.f, 0.f}},
+            {5.f, 50, 1e21f, {-300.f, -300.f, -300.f}, {45.f, 45.f, 45.f}, {0.f, 0.f, 0.f}},
+            {5.f, 50, 1e21f, {300.f, 300.f, 300.f}, {-45.f, -45.f, -45.f}, {0.f, 0.f, 0.f}},
+        };
+    }
 
     std::vector<Planet> initialPlanets = planets; // backup for reset functionality
 
