@@ -179,10 +179,4 @@ void calculateTotalEnergy(const std::vector<Planet>& planets, SimulationState &s
     simstate.energyTotal.push_back(totalEnergy);
     simstate.energyError.push_back(relError);   
     simstate.trim(); // trims buffer vectors if they get too large
-
-    // Console output
-    std::cout << std::scientific << std::setprecision(2)
-              << "Kinetic: " << totalKinetic
-              << " Potential: " << totalPotential
-              << " Total: " << totalEnergy << std::endl;
 }
