@@ -7,7 +7,7 @@
 CameraControls* CameraControls::instance = nullptr;
 
 CameraControls::CameraControls(float initialDistance)
-    : distance(initialDistance), yaw(0.0f), pitch(0.0f), panX(0.0f), panY(0.0f),
+    : distance(initialDistance), yaw(30.0f), pitch(-60.0f), panX(0.0f), panY(0.0f),
       leftMousePressed(false), middleMousePressed(false), lastMouseX(0.0), lastMouseY(0.0) {
     instance = this;
 }
@@ -71,6 +71,6 @@ void CameraControls::applyView() {
 }
 
 void CameraControls::reset() {
-    yaw = pitch = panX = panY = 0.0f;
+    yaw = 0.0f; pitch = 30.0f; panX = panY = 0.0f;
     distance = 2300.0f;
 }
