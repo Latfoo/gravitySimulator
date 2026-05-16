@@ -4,8 +4,6 @@ This is a personal project where I'm learning to build a real-time simulation of
 
 It now models gravitational interactions and perfectly elastic collisions between spherical objects, visualized in 3D using legacy OpenGL. A minimal GUI has been added to experiment with and observe the relative error of different numerical integrators. The GUI also includes controls for interacting with and managing the simulation at runtime.
 
-This is my first attempt at building a full C++ application outside of university or academic exercises. Starting simple and steadily adding features and accuracy as I learn.
-
 ## Simulation Preview
 
 ### Video
@@ -43,13 +41,6 @@ Whether this tradeoff is worthwhile depends on the number of bodies and availabl
 | ~100–200 | Marginal — roughly break-even     |
 | 500+     | Yes — clear speedup              |
 | 1,000+   | Essential                         |
-
-## Further Goals
-
-- Make it interactive --> enable manual configuration of initial conditions via GUI Window
-- Improve physical accuracy and structure over time
-- Make it cross-platform compatible
-- Learn by building, not just reading
 
 ## Build
 
