@@ -1,5 +1,16 @@
 # Changelog
 
+## [v0.9] - 2026-03-02
+
+### Features
+- Implemented the possibility to load inital scenes via JSON files
+  - Add nlohmann/json (header-only) for JSON parsing
+  - Add SceneLoader to parse scene files into Planet vectors
+  - Accept scene file path as CLI argument (./GravitySim path/to/scene.json)
+
+### Technical Improvements
+- Halved force pair evaluations for improved performance, utilising Newton's third law
+
 ## [v0.8] - 2025-08-08
 
 ### Features
