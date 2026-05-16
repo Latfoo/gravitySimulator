@@ -2,7 +2,7 @@
 
 This is a personal project where I'm learning to build a real-time simulation of celestial bodies using C++. It began as a simple 2D circle bouncing under gravity, modeled with basic kinematics. Since then, the simulation has evolved significantly: from kinematics to full Newtonian kinetics, and from 2D to 3D.
 
-It now models gravitational interactions and perfectly elastic collisions between spherical objects, visualized in 3D using legacy OpenGL. A minimal GUI has been added to experiment with and observe the relative error of different numerical integrators. The GUI also includes controls for interacting with and managing the simulation at runtime.
+It now models gravitational interactions and perfectly elastic collisions between spherical objects, visualized in 3D using OpenGL. A GUI has been added to experiment with and observe the relative error of different numerical integrators. The GUI also includes controls for interacting with and managing the simulation at runtime.
 
 ## Simulation Preview
 
