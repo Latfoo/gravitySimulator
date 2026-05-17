@@ -8,11 +8,11 @@ It now models gravitational interactions and perfectly elastic collisions betwee
 
 ### Video
 
-[![Short Demo Video](https://Latfoo.github.io/gravitySimulator/preview.gif)](https://Latfoo.github.io/gravitySimulator/demo_video.mp4)
+[![Short Demo Video](https://Latfoo.github.io/gravitySimulator/docs/preview.gif)](https://Latfoo.github.io/gravitySimulator/docs/demo_video.mp4)
 > ⚠️ This is a GIF preview. Hence some stuttering or quality loss. Click the GIF to see a short demo video including GUI!
 
 ### GUI Preview
-![GUI Preview](https://Latfoo.github.io/gravitySimulator/gui_demo.png)
+![GUI Preview](https://Latfoo.github.io/gravitySimulator/docs/gui_demo.png)
 
 
 ## Notes
