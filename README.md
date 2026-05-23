@@ -15,6 +15,47 @@ It now models gravitational interactions and perfectly elastic collisions betwee
 ![GUI Preview](https://Latfoo.github.io/gravitySimulator/gui_demo.png)
 
 
+## Numerical Integrators
+
+The simulation supports four numerical integrators for advancing the physics each frame:
+
+| Integrator | Order | Symplectic |
+|---|---|---|
+| Explicit Euler | 1st | No |
+| Semi-implicit Euler | 1st | Yes |
+| Leapfrog | 2nd | Yes |
+| RK4 | 4th | No |
+
+Symplectic integrators are structure-preserving methods for Hamiltonian
+systems that exactly preserve the symplectic 2-form of phase space. By
+backward error analysis, they can be interpreted as exactly solving a nearby
+"shadow" Hamiltonian whose value stays close to that of the original system.
+As a consequence, the energy error remains bounded and oscillates rather than
+drifting, over exponentially long time intervals in the step size [1, 2].
+Non-symplectic methods carry no such guarantee. Explicit Euler, a low-order
+non-symplectic scheme, shows unbounded secular growth in energy for typical
+oscillatory systems. A high-order non-symplectic method such as RK4 can still
+achieve negligible drift on practical timescales, though without any long-time
+conservation theorem.
+
+## References
+
+[1] Hairer, E., Lubich, C., & Wanner, G. (2006). *Geometric Numerical
+    Integration: Structure-Preserving Algorithms for Ordinary Differential
+    Equations* (2nd ed.). Springer Series in Computational Mathematics,
+    vol. 31. Chapter IX (Backward Error Analysis and Structure Preservation).
+
+[2] Benettin, G., & Giorgilli, A. (1994). On the Hamiltonian interpolation of
+    near-to-the-identity symplectic mappings with application to symplectic
+    integration algorithms. *Journal of Statistical Physics*, 74(5/6),
+    1117–1143.
+    
+### Energy Conservation Benchmark
+
+The plot below shows the relative energy error `|ΔE/E₀|` over simulated time for each integrator, applied to the same N-body initial conditions:
+
+![Energy Error Plot](https://Latfoo.github.io/gravitySimulator/energy_errors.png)
+
 ## Notes
 
 - The code is work in progress
@@ -94,6 +135,15 @@ Run the simulation:
 ```
 If no argument is given and no `scene.json` is found, the simulation falls back to a built-in default scene.
 
+### Benchmark
+
+To regenerate the energy error plot, build the `Benchmark` target and run the Python plotting script. The benchmark requires `pandas` and `matplotlib` which can be installed via `pip3 install pandas matplotlib`.
+
+```bash
+cmake --build build --target Benchmark
+./build/Benchmark
+python3 tools/plot_errors.py
+```
+
 ## Author
 Latfoo
-
