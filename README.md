@@ -31,24 +31,17 @@ systems that exactly preserve the symplectic 2-form of phase space. By
 backward error analysis, they can be interpreted as exactly solving a nearby
 "shadow" Hamiltonian whose value stays close to that of the original system.
 As a consequence, the energy error remains bounded and oscillates rather than
-drifting, over exponentially long time intervals in the step size [1, 2].
+drifting, over exponentially long time intervals in the step size.
 Non-symplectic methods carry no such guarantee. Explicit Euler, a low-order
 non-symplectic scheme, shows unbounded secular growth in energy for typical
 oscillatory systems. A high-order non-symplectic method such as RK4 can still
 achieve negligible drift on practical timescales, though without any long-time
-conservation theorem.
-
-## References
+conservation theorem. [1]
 
 [1] Hairer, E., Lubich, C., & Wanner, G. (2006). *Geometric Numerical
     Integration: Structure-Preserving Algorithms for Ordinary Differential
     Equations* (2nd ed.). Springer Series in Computational Mathematics,
-    vol. 31. Chapter IX (Backward Error Analysis and Structure Preservation).
-
-[2] Benettin, G., & Giorgilli, A. (1994). On the Hamiltonian interpolation of
-    near-to-the-identity symplectic mappings with application to symplectic
-    integration algorithms. *Journal of Statistical Physics*, 74(5/6),
-    1117–1143.
+    vol. 31. Chapters I and IX.
     
 ### Energy Conservation Benchmark
 
