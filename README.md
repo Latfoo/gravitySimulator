@@ -1,8 +1,10 @@
 # Real-Time Gravity Simulation (C++)
 
-This is a personal project where I'm learning to build a real-time simulation of celestial bodies using C++. It began as a simple 2D circle bouncing under gravity, modeled with basic kinematics. Since then, the simulation has evolved significantly: from kinematics to full Newtonian kinetics, and from 2D to 3D.
+A personal C++ project built to deepen my understanding of real-time simulation, numerical methods, and performance tradeoffs. It started as a 2D circle bouncing under gravity and grew into a full 3D N-body simulator, evolving from basic kinematics to Newtonian kinetics and from a single body to arbitrarily many.
 
-It now models gravitational interactions and perfectly elastic collisions between spherical objects, visualized in 3D using OpenGL. A GUI has been added to experiment with and observe the relative error of different numerical integrators. The GUI also includes controls for interacting with and managing the simulation at runtime.
+The simulation models gravitational interactions and perfectly elastic collisions between spherical bodies, rendered in 3D with OpenGL. Four numerical integrators are supported and can be switched at runtime via an interactive GUI. Their long-term energy conservation behavior is compared in a benchmark, with results plotted to evaluate stability and drift.
+
+Scalability is also a considered part of the design: the force evaluation is O(N²) by nature, and the project documents the tradeoffs between applying Newton's third law optimization and parallelizing with OpenMP as body counts grow.
 
 ## Simulation Preview
 
@@ -67,14 +69,36 @@ The simulation uses a direct N-body approach where every pair of bodies interact
 
 Parallelizing the force loop across CPU cores is the obvious next step, but it comes with a tradeoff. The Newton's third law optimization requires both bodies in a pair to be updated simultaneously, which introduces write conflicts between threads. The clean alternative is to give each body its own independent loop over all others: Safe to parallelize, but at the cost of redundant (2x) force evaluations.
 
-Whether this tradeoff is worthwhile depends on the number of bodies and available cores:
+Whether this tradeoff is worthwhile depends on the number of bodies and available cores. Spawning threads has a fixed startup cost each frame regardless of how much actual work they do. With few bodies, each thread finishes almost instantly and this overhead dominates, making parallelism slower overall. As body count grows the force computation starts to dwarf the overhead and at some point threads win.
+
+Concretely, the serial approach (Newton's third law) does N²/2 force evaluations per frame. The parallel approach does N² evaluations split across P threads, plus a fixed thread startup cost T_overhead. Parallel is faster when:
+
+```
+N²/P × T_force + T_overhead  <  N²/2 × T_force
+```
+
+Rearranging for the crossover body count:
+
+```
+N  >  sqrt( T_overhead / (T_force × (1/2 − 1/P)) )
+```
+
+Using typical values (OpenMP thread overhead ~50 µs, one gravitational force evaluation ~10 ns on modern hardware):
+
+```
+T_overhead / T_force  ≈  50,000 ns / 10 ns  =  5,000
+
+P = 4 cores:  N > sqrt( 5,000 / 0.25 )  =  sqrt(20,000)  ≈  141
+P = 8 cores:  N > sqrt( 5,000 / 0.375 ) =  sqrt(13,333)  ≈  115
+```
+
+That puts the crossover around 100 to 200 bodies, consistent with the table below. These use representative timing estimates rather than benchmarks on this specific hardware.
 
 | Bodies   | Parallel worth it?                |
 |----------|-----------------------------------|
 | < 100    | No — thread overhead dominates    |
 | ~100–200 | Marginal — roughly break-even     |
-| 500+     | Yes — clear speedup              |
-| 1,000+   | Essential                         |
+| 500+     | Yes — clear speedup               |
 
 ## Build
 
