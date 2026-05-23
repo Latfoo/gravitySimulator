@@ -2,7 +2,7 @@
 #include <vector>
 #include <glm/glm.hpp>
 #include "Planet.hpp"
-#include "functions.hpp"
+#include "physics.hpp"
 #include "SimulationState.hpp"
 #include "NumericalIntegrators.hpp"
 
@@ -75,34 +75,37 @@ void calculateMovement(std::vector<Planet>& planets, float deltaTime, int integr
 }
 
 
+float totalEnergy(const std::vector<Planet>& planets) {
+    float kinetic = 0.0f, potential = 0.0f;
+    for (const auto& p : planets)
+        kinetic += 0.5f * p.mass * glm::dot(p.velocity, p.velocity);
+    for (size_t i = 0; i < planets.size(); ++i)
+        for (size_t j = i + 1; j < planets.size(); ++j) {
+            float d = glm::length(planets[j].position - planets[i].position);
+            potential -= G * planets[i].mass * planets[j].mass / d;
+        }
+    return kinetic + potential;
+}
+
 void calculateTotalEnergy(const std::vector<Planet>& planets, SimulationState& simstate) {
     float totalKinetic = 0.0f;
-    float totalPotential = 0.0f;
-
     for (const auto& planet : planets)
         totalKinetic += 0.5f * planet.mass * glm::dot(planet.velocity, planet.velocity);
 
-    for (size_t i = 0; i < planets.size(); ++i) {
-        for (size_t j = i + 1; j < planets.size(); ++j) {
-            glm::vec3 r = planets[j].position - planets[i].position;
-            float dist = glm::length(r);
-            totalPotential -= G * planets[i].mass * planets[j].mass / dist;
-        }
-    }
-
-    float totalEnergy = totalKinetic + totalPotential;
+    float energy = totalEnergy(planets);
+    float totalPotential = energy - totalKinetic;
 
     if (!simstate.baselineSet) {
-        simstate.initialTotalEnergy = totalEnergy;
+        simstate.initialTotalEnergy = energy;
         simstate.baselineSet = true;
     }
     float relError = 0.0f;
     if (simstate.initialTotalEnergy != 0.0f)
-        relError = abs((totalEnergy - simstate.initialTotalEnergy) / simstate.initialTotalEnergy);
+        relError = abs((energy - simstate.initialTotalEnergy) / simstate.initialTotalEnergy);
 
     simstate.energyKinetic.push_back(totalKinetic);
     simstate.energyPotential.push_back(totalPotential);
-    simstate.energyTotal.push_back(totalEnergy);
+    simstate.energyTotal.push_back(energy);
     simstate.energyError.push_back(relError);
     simstate.trim();
 }

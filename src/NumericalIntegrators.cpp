@@ -1,6 +1,6 @@
 #include "NumericalIntegrators.hpp"
 #include "Planet.hpp"
-#include "functions.hpp"
+#include "physics.hpp"
 
 void explicitEuler(std::vector<Planet> &planets, float deltaTime) {
     updateAccelerations(planets);

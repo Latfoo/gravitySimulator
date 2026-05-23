@@ -4,7 +4,7 @@
 #include <vector>
 #include <glm/glm.hpp>
 #include "Planet.hpp"
-#include "functions.hpp"
+#include "physics.hpp"
 #include "constants.hpp"
 #include "SimulationState.hpp"
 #include "Gui.hpp"

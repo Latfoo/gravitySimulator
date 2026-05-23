@@ -5,7 +5,7 @@
 #include <vector>
 #include "Planet.hpp"
 #include "SceneLoader.hpp"
-#include "functions.hpp"
+#include "physics.hpp"
 #include "constants.hpp"
 
 std::vector<Planet> defaultScene() {
@@ -21,17 +21,6 @@ std::vector<Planet> defaultScene() {
     };
 }
 
-float totalEnergy(const std::vector<Planet>& planets) {
-    float kinetic = 0.0f, potential = 0.0f;
-    for (const Planet& p : planets)
-        kinetic += 0.5f * p.mass * glm::dot(p.velocity, p.velocity);
-    for (size_t i = 0; i < planets.size(); ++i)
-        for (size_t j = i + 1; j < planets.size(); ++j) {
-            float d = glm::length(planets[j].position - planets[i].position);
-            potential -= G * planets[i].mass * planets[j].mass / d;
-        }
-    return kinetic + potential;
-}
 
 int main() {
     const int   N_STEPS = 2500;
@@ -54,6 +43,7 @@ int main() {
 
         for (int step = 0; step < N_STEPS; ++step) {
             calculateMovement(planets, DT, integ);
+            checkAllCollisions(planets);
             float err = (E0 != 0.0f) ? std::abs((totalEnergy(planets) - E0) / E0) : 0.0f;
             errors[integ].push_back(err);
         }

@@ -1,7 +1,7 @@
 #include <GLFW/glfw3.h>
 #include <math.h>
 #include "Planet.hpp"
-#include "functions.hpp"
+#include "physics.hpp"
 
 
 void drawPlanet(Planet& planet) {

@@ -57,6 +57,11 @@ void checkAllCollisions(std::vector<Planet>& planets);
 void calculateMovement(std::vector<Planet>& planets, float deltaTime, int integratorChoice);
 
 /**
+ * @brief Returns the total mechanical energy (kinetic + potential) of the system.
+ */
+float totalEnergy(const std::vector<Planet>& planets);
+
+/**
  * @brief Calculates and logs the system's total kinetic, potential, and total energy.
  * @param planets   Vector of Planet objects representing the current simulation state.
  * @param simstate  Reference to a SimulationState object where energy values will be stored.
