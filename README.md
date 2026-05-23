@@ -17,6 +17,54 @@ Scalability is also a considered part of the design: the force evaluation is O(N
 ![GUI Preview](https://Latfoo.github.io/gravitySimulator/gui_demo.png)
 
 
+## Notes
+
+- The code is work in progress
+- Currently only tested and built in Linux Ubuntu
+- [`CHANGELOG.md`](./CHANGELOG.md) documents current features and development steps
+- Built with C++, OpenGL, GLFW, Imgui, Implot
+
+## File Structure
+
+```
+gravitySimulator/
+├── src/                          # Source files
+│   ├── main.cpp                  # Entry point, render loop
+│   ├── physics.cpp               # N-body force & collision logic
+│   ├── rendering.cpp             # OpenGL rendering
+│   ├── NumericalIntegrators.cpp  # Euler, Leapfrog, RK4 implementations
+│   ├── Gui.cpp                   # ImGui interface
+│   ├── SceneLoader.cpp           # JSON scene parsing
+│   ├── camera_controls.cpp       # Camera input & movement
+│   └── benchmark.cpp             # Energy conservation benchmark
+├── include/                      # Header files
+│   ├── Planet.hpp                # Body data structure
+│   ├── physics.hpp
+│   ├── NumericalIntegrators.hpp
+│   ├── SimulationState.hpp       # Shared simulation state
+│   ├── Gui.hpp
+│   ├── SceneLoader.hpp
+│   ├── camera_controls.hpp
+│   ├── constants.hpp
+│   ├── glm/                      # GLM math library (vendored)
+│   ├── imgui/                    # Dear ImGui (vendored)
+│   ├── implot/                   # ImPlot (vendored)
+│   └── nlohmann/json.hpp         # JSON library (vendored)
+├── docs/                         # Media assets
+│   ├── preview.gif
+│   ├── demo_video.mp4
+│   ├── gui_demo.png
+│   ├── energy_errors.png
+│   └── energy_errors.csv
+├── tools/
+│   ├── plot_errors.py            # Plot benchmark results
+│   └── capture_gif.py
+├── scene.json                    # Default scene configuration
+├── CMakeLists.txt
+├── CHANGELOG.md
+└── README.md
+```
+
 ## Numerical Integrators
 
 The simulation supports four numerical integrators for advancing the physics each frame:
@@ -50,13 +98,6 @@ conservation theorem. [1]
 The plot below shows the relative energy error `|ΔE/E₀|` over simulated time for each integrator, applied to the same N-body initial conditions:
 
 ![Energy Error Plot](https://Latfoo.github.io/gravitySimulator/energy_errors.png)
-
-## Notes
-
-- The code is work in progress
-- Currently only tested and built in Linux Ubuntu
-- [`CHANGELOG.md`](./CHANGELOG.md) documents current features and development steps
-- Built with C++, OpenGL, GLFW, Imgui, Implot
 
 ## Scalability
 
@@ -118,7 +159,7 @@ These are the required packages for building and running the simulation:
 sudo apt update
 sudo apt install libgl1-mesa-dev libglu1-mesa-dev libglfw3-dev cmake
 ```
-If `apt` is not available (e.g. on Arch or Fedora), use your distribution’s package manager instead (like `pacman` or `dnf`).
+If `apt` is not available (e.g. on Arch or Fedora), use your distribution's package manager instead (like `pacman` or `dnf`).
 
 #### MacOS
 
